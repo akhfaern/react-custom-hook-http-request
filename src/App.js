@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import useHttpRequest from "./hooks/useHttpRequest";
+import React from "react";
 
 function App() {
+  const {data, error, loading, refresh} = useHttpRequest("https://jsonplaceholder.typicode.com/users");
+
+  if (loading) return <h1>loading...</h1>;
+
+  if (error) console.log(error);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div><button onClick={refresh}>Refresh</button></div>
+      <div>
+        {data?.map((user, index) => (
+          <div key={index}>{user.email}</div>
+        ))}
+      </div>
+    </>
   );
 }
 
